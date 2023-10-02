@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const routes = require("./routes/userRoutes");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 const cors = require("cors");
 
 const swaggerUi = require("swagger-ui-express");
@@ -16,7 +16,7 @@ const swaggerUi = require("swagger-ui-express");
 app.use(cors());
 
 // Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
 
 // Connect the database
 // mongoose
