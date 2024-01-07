@@ -1,45 +1,89 @@
-const mongoose = require("mongoose");
+const path = require("path");
+const dotenv = require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
-const routes = require("./routes/userRoutes");
-const helmet = require("helmet");
-const cors = require("cors");
+const mongoose = require("mongoose");
+const multer = require("multer");
 
 const swaggerUi = require("swagger-ui-express");
-// const swaggerDocument = require("./swagger");
+const swaggerJsDoc = require("swagger-jsdoc");
 
-// router.use("/api-docs", swaggerUi.serve);
-// router.get("/api-docs", swaggerUi.setup(swaggerDocument));
+const authRoutes = require("./routes/auth");
+const postRoutes = require("./routes/post");
+const userRoutes = require("./routes/user");
 
-// Allow Cross-Origin requests
-app.use(cors());
+const app = express();
 
-// Set security HTTP headers
-app.use(helmet());
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Social App API",
+      description: "API endpoints for a Social App services documented on swagger",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:8080/",
+        description: "Local server",
+      },
+      {
+        url: "https://frameworks-comparison-node-server.onrender.com/",
+        description: "Live server",
+      },
+    ],
+  },
 
-// Connect the database
-// mongoose
-//   .connect(database, {
-//     useNewUrlParser: true,
-//     useCreateIndex: true,
-//     useFindAndModify: false,
-//   })
-//   .then((con) => {
-//     console.log("DB connection Successfully!");
-//   });
+  apis: ["./routes/*.js"],
+};
 
-const port = process.env.PORT;
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
+app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.get("/", (req, res) => res.send("App is working"));
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
-app.use("/api", routes);
+app.use("/", authRoutes);
+app.use("/", userRoutes);
+app.use("/", postRoutes);
 
-app.listen(8000, () => console.log("Example app listening on port 3000!"));
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
+});
 
-module.exports = {
-  app,
-};
+mongoose
+  .connect(process.env.DATABASE)
+  .then((result) => {
+    console.log("App listening on port 8080");
+    app.listen(8080);
+  })
+  .catch((err) => console.log(err));
