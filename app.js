@@ -13,6 +13,7 @@ const postRoutes = require("./routes/post");
 const userRoutes = require("./routes/user");
 
 const app = express();
+const port = process.env.PORT || 8080;
 
 const swaggerOptions = {
   definition: {
@@ -83,7 +84,11 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(process.env.DATABASE)
   .then((result) => {
-    console.log("App listening on port 8080");
-    app.listen(8080);
+    if (process.env.NODE_ENV === "production") {
+      console.log("App listening in production on port", port);
+    } else {
+      console.log("App listening locally on port", port);
+    }
+    app.listen(port);
   })
   .catch((err) => console.log(err));
