@@ -78,11 +78,11 @@ exports.updatePost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
+  const imageUrl = `${req.protocol}://${req.hostname}${process.env.PORT ? ":" + process.env.PORT : ""}/${req.file.path}`;
   const post = new Post({
     creator: req.body.userId,
     caption: req.body.caption,
-    imageUrl: req.body.imageUrl,
-    imageId: req.body.imageId,
+    imageUrl: imageUrl,
     location: req.body.location,
     tags: req.body.tags,
   });

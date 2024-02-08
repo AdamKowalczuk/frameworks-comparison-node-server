@@ -1,15 +1,26 @@
 const express = require("express");
 const { body } = require("express-validator");
-
+const multer = require("multer");
 const Post = require("../models/post");
 const postController = require("../controllers/post");
 const isAuth = require("../middleware/is-auth");
 
 const router = express.Router();
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 router.get("/api/posts", isAuth, postController.getPosts);
 router.get("/api/posts/:postId", isAuth, postController.getPost);
-router.post("/api/posts", isAuth, postController.createPost);
+router.post("/api/posts", isAuth, upload.single("file"), postController.createPost);
 router.put("/api/posts/:postId", isAuth, postController.updatePost);
 
 module.exports = router;
