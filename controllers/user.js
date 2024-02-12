@@ -3,6 +3,8 @@ const { validationResult } = require("express-validator");
 const User = require("../models/user");
 
 exports.getUsers = (req, res, next) => {
+  /*  #swagger.tags = ['User']
+            #swagger.description = 'Endpoint to get list of users.' */
   User.find()
     .then((users) => {
       if (!users) {
@@ -22,6 +24,8 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
+  /*  #swagger.tags = ['User']
+            #swagger.description = 'Endpoint to get user.' */
   const userId = req.params.userId;
   User.findById(userId)
     .then((user) => {
@@ -41,6 +45,8 @@ exports.getUser = (req, res, next) => {
 };
 
 exports.updateUser = (req, res, next) => {
+  /*  #swagger.tags = ['User']
+            #swagger.description = 'Endpoint to update user.' */
   const userId = req.params.userId;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

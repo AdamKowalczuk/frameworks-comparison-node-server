@@ -3,8 +3,9 @@ const { validationResult } = require("express-validator");
 const Post = require("../models/post");
 
 exports.getPosts = (req, res, next) => {
+  /*  #swagger.tags = ['Post']
+            #swagger.description = 'Endpoint to get list of posts.' */
   Post.find()
-
     .then((posts) => {
       if (!posts) {
         const error = new Error("Could not find posts!");
@@ -23,6 +24,8 @@ exports.getPosts = (req, res, next) => {
 };
 
 exports.getPost = (req, res, next) => {
+  /*  #swagger.tags = ['Post']
+            #swagger.description = 'Endpoint to get post.' */
   const postId = req.params.postId;
   Post.findById(postId)
     .then((post) => {
@@ -42,6 +45,8 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
+  /*  #swagger.tags = ['Post']
+            #swagger.description = 'Endpoint to update post.' */
   const postId = req.params.postId;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -78,6 +83,8 @@ exports.updatePost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
+  /*  #swagger.tags = ['Post']
+            #swagger.description = 'Endpoint to create post.' */
   const imageUrl = `${req.protocol}://${req.hostname}${process.env.PORT ? ":" + process.env.PORT : ""}/${req.file.path}`;
   const post = new Post({
     creator: req.body.userId,

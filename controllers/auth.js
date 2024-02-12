@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.signup = (req, res, next) => {
+  /*  #swagger.tags = ['Auth']
+            #swagger.description = 'Endpoint to register new user.' */
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed!");
@@ -46,6 +48,8 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
+  /*  #swagger.tags = ['Auth']
+      #swagger.description = 'Endpoint to login user.' */
   const email = req.body.email;
   const password = req.body.password;
   let loadedUser;
@@ -73,7 +77,7 @@ exports.login = (req, res, next) => {
         "somesupersecretsecret",
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token: token, userId: loadedUser._id.toString() });
+      res.status(200).json({ message: "Login successfully!", token: token, userId: loadedUser._id.toString() });
     })
     .catch((err) => {
       if (!err.statusCode) {

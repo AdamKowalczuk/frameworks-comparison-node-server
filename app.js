@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const swaggerUi = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerFile = require("./swagger_output.json");
 
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
@@ -14,31 +14,7 @@ const userRoutes = require("./routes/user");
 const app = express();
 const port = process.env.PORT || 8080;
 
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Social App API",
-      description: "API endpoints for a Social App services documented on swagger",
-      version: "1.0.0",
-    },
-    servers: [
-      {
-        url: "http://localhost:8080/",
-        description: "Local server",
-      },
-      {
-        url: "https://frameworks-comparison-node-server.onrender.com/",
-        description: "Live server",
-      },
-    ],
-  },
-
-  apis: ["./routes/*.js"],
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(bodyParser.json());
 
