@@ -73,7 +73,6 @@
           "Auth"
         ],
         "description": "Endpoint to login user.",
-        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -213,6 +212,115 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoint to delete a post.",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/posts/{postId}/like": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoint to like a post.",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoint to unlike a post.",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/posts/{postId}/save": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoint to save a post.",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoint to unsave a post.",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/api/users": {
@@ -297,116 +405,32 @@
           }
         }
       }
+    },
+    "/api/users/{userId}/posts": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to get posts of a specific user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
-    "schemas": {
-      "Parents": {
-        "type": "object",
-        "properties": {
-          "father": {
-            "type": "string",
-            "example": "Simon Doe"
-          },
-          "mother": {
-            "type": "string",
-            "example": "Marie Doe"
-          }
-        }
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "John Doe"
-          },
-          "age": {
-            "type": "number",
-            "example": 29
-          },
-          "parents": {
-            "$ref": "#/components/schemas/Parents"
-          },
-          "diplomas": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "school": {
-                  "type": "string",
-                  "example": "XYZ University"
-                },
-                "year": {
-                  "type": "number",
-                  "example": 2020
-                },
-                "completed": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "internship": {
-                  "type": "object",
-                  "properties": {
-                    "hours": {
-                      "type": "number",
-                      "example": 290
-                    },
-                    "location": {
-                      "type": "string",
-                      "example": "XYZ Company"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "AddUser": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "John Doe"
-          },
-          "age": {
-            "type": "number",
-            "example": 29
-          },
-          "about": {
-            "type": "string",
-            "example": ""
-          }
-        },
-        "required": [
-          "name",
-          "age"
-        ]
-      },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": ""
-          },
-          "token": {
-            "type": "string",
-            "example": ""
-          },
-          "userId": {
-            "type": "string",
-            "example": ""
-          }
-        },
-        "required": [
-          "message",
-          "token",
-          "userId"
-        ]
-      }
-    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "apiKey",

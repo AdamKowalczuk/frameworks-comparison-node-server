@@ -18,7 +18,10 @@ const postSchema = new mongoose.Schema(
     },
     imageId: {
       type: String,
-      required: true,
+      // required: true,
+    },
+    file: {
+      type: String,
     },
     location: {
       type: String,

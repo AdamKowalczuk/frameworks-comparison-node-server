@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 
 const User = require("../models/user");
+const Post = require("../models/post");
 
 exports.getUsers = (req, res, next) => {
   /*  #swagger.tags = ['User']
@@ -72,6 +73,28 @@ exports.updateUser = (req, res, next) => {
     })
     .then((result) => {
       res.status(200).json({ message: "User updated!", user: result });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.getUserPosts = (req, res, next) => {
+  /*  #swagger.tags = ['User']
+      #swagger.description = 'Endpoint to get posts of a specific user.' */
+  const userId = req.params.userId;
+
+  Post.find({ creator: userId })
+    .then((posts) => {
+      if (!posts || posts.length === 0) {
+        const error = new Error("No posts found for this user!");
+        error.statusCode = 404;
+        throw error;
+      }
+      res.status(200).json({ message: "User posts fetched successfully!", posts: posts });
     })
     .catch((err) => {
       if (!err.statusCode) {

@@ -10,5 +10,6 @@ const router = express.Router();
 router.get("/api/users", isAuth, userController.getUsers);
 router.get("/api/users/:userId", isAuth, userController.getUser);
 router.put("/api/users/:userId", isAuth, userController.updateUser);
+router.get("/api/users/:userId/posts", isAuth, userController.getUserPosts);
 
 module.exports = router;

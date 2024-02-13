@@ -5,8 +5,10 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.signup = (req, res, next) => {
-  /*  #swagger.tags = ['Auth']
-            #swagger.description = 'Endpoint to register new user.' */
+  /*
+  #swagger.tags = ['Auth']
+  #swagger.description = 'Endpoint to register new user.'
+*/
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed!");

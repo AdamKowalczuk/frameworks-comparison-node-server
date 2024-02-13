@@ -26,6 +26,8 @@ const userSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
     },
+    likedPosts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    savedPosts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   },
   { timestamps: true }
 );
