@@ -4,8 +4,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const swaggerUi = require("swagger-ui-express");
-const swaggerFile = require("./swagger_output.json");
+// const swaggerUi = require("swagger-ui-express");
+// const swaggerFile = require("./swagger_output.json");
 
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
@@ -14,7 +14,7 @@ const userRoutes = require("./routes/user");
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(bodyParser.json());
 
