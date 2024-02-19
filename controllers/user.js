@@ -49,6 +49,7 @@ exports.updateUser = (req, res, next) => {
   /*  #swagger.tags = ['User']
             #swagger.description = 'Endpoint to update user.' */
   const userId = req.params.userId;
+  const imageUrl = `${req.protocol}://${req.hostname}${process.env.PORT ? ":" + process.env.PORT : ""}/${req.file.path}`;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed, entered data is incorrect.");
@@ -64,10 +65,9 @@ exports.updateUser = (req, res, next) => {
         throw error;
       }
       user.name = req.body.name;
-      user.email = req.body.email;
-      user.password = req.body.password;
       user.username = req.body.username;
-      user.imageUrl = req.body.imageUrl;
+      user.bio = req.body.bio;
+      user.imageUrl = imageUrl;
 
       return user.save();
     })

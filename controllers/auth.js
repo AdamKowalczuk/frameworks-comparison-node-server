@@ -79,7 +79,14 @@ exports.login = (req, res, next) => {
         "somesupersecretsecret",
         { expiresIn: "1h" }
       );
-      res.status(200).json({ message: "Login successfully!", token: token, userId: loadedUser._id.toString() });
+      res.status(200).json({
+        message: "Login successfully!",
+        token: token,
+        userId: loadedUser._id.toString(),
+        imageUrl: loadedUser.imageUrl,
+        username: loadedUser.username,
+        name: loadedUser.name,
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
