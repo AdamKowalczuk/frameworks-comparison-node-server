@@ -39,7 +39,17 @@ exports.signup = (req, res, next) => {
         "somesupersecretsecret",
         { expiresIn: "1h" }
       );
-      res.status(201).json({ message: "User created successfully!", userId: result._id, token });
+      res.status(201).json({
+        message: "User created successfully!",
+        token,
+        user: {
+          userId: result._id,
+          imageUrl: result.imageUrl,
+          username: result.username,
+          name: result.name,
+          bio: result.bio,
+        },
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -82,10 +92,13 @@ exports.login = (req, res, next) => {
       res.status(200).json({
         message: "Login successfully!",
         token: token,
-        userId: loadedUser._id.toString(),
-        imageUrl: loadedUser.imageUrl,
-        username: loadedUser.username,
-        name: loadedUser.name,
+        user: {
+          userId: loadedUser._id.toString(),
+          imageUrl: loadedUser.imageUrl,
+          username: loadedUser.username,
+          name: loadedUser.name,
+          bio: loadedUser.bio,
+        },
       });
     })
     .catch((err) => {
