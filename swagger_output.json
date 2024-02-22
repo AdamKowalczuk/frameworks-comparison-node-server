@@ -36,7 +36,6 @@
           "Auth"
         ],
         "description": "Endpoint to register new user.",
-        "parameters": [],
         "responses": {
           "201": {
             "description": "Created"
@@ -387,16 +386,10 @@
                   "name": {
                     "example": "any"
                   },
-                  "email": {
-                    "example": "any"
-                  },
-                  "password": {
-                    "example": "any"
-                  },
                   "username": {
                     "example": "any"
                   },
-                  "imageUrl": {
+                  "bio": {
                     "example": "any"
                   }
                 }

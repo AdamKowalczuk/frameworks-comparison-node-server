@@ -1,7 +1,5 @@
 const express = require("express");
-const { body } = require("express-validator");
 const multer = require("multer");
-const Post = require("../models/post");
 const postController = require("../controllers/post");
 const isAuth = require("../middleware/is-auth");
 
