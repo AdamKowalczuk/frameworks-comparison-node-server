@@ -20,6 +20,10 @@ Umożliwia użytkownikom zarządzanie swoimi profilami, takimi jak zmiana danych
 
 - Uruchamianie serwera: `nodemon app.js`
 
+## Dokumentacja w Swagger
+
+https://frameworks-comparison-node-server.onrender.com/api-docs/
+
 ## Używane Technologie
 
 - Node.js
