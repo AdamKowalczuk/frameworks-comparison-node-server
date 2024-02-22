@@ -1,8 +1,4 @@
-# Nazwa Twojego Projektu
-
-Krótki opis projektu.
-
-## Funkcjonalności
+# Serwer aplikacji PostShare
 
 ### Autoryzacja użytkownika:
 
