@@ -23,7 +23,5 @@ router.put("/api/posts/:postId", isAuth, postController.updatePost);
 router.delete("/api/posts/:postId", isAuth, postController.deletePost);
 router.post("/api/posts/:postId/like", isAuth, postController.likePost);
 router.delete("/api/posts/:postId/like", isAuth, postController.unlikePost);
-router.post("/api/posts/:postId/save", isAuth, postController.savePost);
-router.delete("/api/posts/:postId/save", isAuth, postController.unsavePost);
 
 module.exports = router;

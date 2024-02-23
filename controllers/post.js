@@ -185,6 +185,23 @@ exports.likePost = (req, res, next) => {
 
       return post.save();
     })
+    .then((updatedPost) => {
+      return User.findById(userId);
+    })
+    .then((user) => {
+      if (!user) {
+        const error = new Error("User not found.");
+        error.statusCode = 404;
+        throw error;
+      }
+
+      const isPostLiked = user.likedPosts.includes(postId);
+
+      if (!isPostLiked) {
+        user.likedPosts.push(postId);
+      }
+      return user.save();
+    })
     .then(() => {
       res.status(200).json({ message: "Post liked successfully." });
     })
@@ -200,7 +217,9 @@ exports.unlikePost = (req, res, next) => {
   /*  #swagger.tags = ['Post']
       #swagger.description = 'Endpoint to unlike a post.' */
   const postId = req.params.postId;
-  const userId = req.userId; // Zakładając, że masz dostęp do ID użytkownika z middleware isAuth
+  const userId = req.userId;
+
+  let foundPost;
 
   Post.findById(postId)
     .then((post) => {
@@ -210,7 +229,8 @@ exports.unlikePost = (req, res, next) => {
         throw error;
       }
 
-      // Sprawdź, czy użytkownik polubił ten post
+      foundPost = post;
+
       const likeIndex = post.likes.indexOf(userId);
       if (likeIndex === -1) {
         const error = new Error("Post is not liked by the user.");
@@ -218,95 +238,29 @@ exports.unlikePost = (req, res, next) => {
         throw error;
       }
 
-      // Usuń ID użytkownika z listy polubień postu
       post.likes.splice(likeIndex, 1);
 
       return post.save();
     })
     .then(() => {
-      res.status(200).json({ message: "Post unliked successfully." });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
-
-exports.savePost = (req, res, next) => {
-  /*  #swagger.tags = ['Post']
-      #swagger.description = 'Endpoint to save a post.' */
-  const postId = req.params.postId;
-  const userId = req.userId; // Zakładając, że masz dostęp do ID użytkownika z middleware isAuth
-
-  Post.findById(postId)
-    .then((post) => {
-      if (!post) {
-        const error = new Error("Could not find post.");
-        error.statusCode = 404;
-        throw error;
-      }
-
       return User.findById(userId);
     })
     .then((user) => {
       if (!user) {
-        const error = new Error("Could not find user.");
+        const error = new Error("User not found.");
         error.statusCode = 404;
         throw error;
       }
 
-      // Sprawdź, czy post już jest zapisany przez użytkownika
-      const isSaved = user.savedPosts.includes(postId);
-
-      if (!isSaved) {
-        // Dodaj post do listy zapisanych postów użytkownika
-        user.savedPosts.push(postId);
+      const postIndex = user.likedPosts.indexOf(postId);
+      if (postIndex !== -1) {
+        user.likedPosts.splice(postIndex, 1);
       }
 
       return user.save();
     })
     .then(() => {
-      res.status(200).json({ message: "Post saved successfully." });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
-
-exports.unsavePost = (req, res, next) => {
-  /*  #swagger.tags = ['Post']
-      #swagger.description = 'Endpoint to unsave a post.' */
-  const postId = req.params.postId;
-  const userId = req.userId; // Zakładając, że masz dostęp do ID użytkownika z middleware isAuth
-
-  User.findById(userId)
-    .then((user) => {
-      if (!user) {
-        const error = new Error("Could not find user.");
-        error.statusCode = 404;
-        throw error;
-      }
-
-      // Sprawdź, czy post jest zapisany przez użytkownika
-      const postIndex = user.savedPosts.indexOf(postId);
-      if (postIndex === -1) {
-        const error = new Error("Post is not saved by the user.");
-        error.statusCode = 400;
-        throw error;
-      }
-
-      // Usuń post z listy zapisanych postów użytkownika
-      user.savedPosts.splice(postIndex, 1);
-
-      return user.save();
-    })
-    .then(() => {
-      res.status(200).json({ message: "Post unsaved successfully." });
+      res.status(200).json({ message: "Post unliked successfully." });
     })
     .catch((err) => {
       if (!err.statusCode) {
