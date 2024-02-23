@@ -1,8 +1,4 @@
-# Nazwa Twojego Projektu
-
-Krótki opis projektu.
-
-## Funkcjonalności
+# Serwer aplikacji PostShare
 
 ### Autoryzacja użytkownika:
 
@@ -23,6 +19,10 @@ Umożliwia użytkownikom zarządzanie swoimi profilami, takimi jak zmiana danych
 ## Uruchamianie
 
 - Uruchamianie serwera: `nodemon app.js`
+
+## Dokumentacja w Swagger
+
+https://frameworks-comparison-node-server.onrender.com/api-docs/
 
 ## Używane Technologie
 
