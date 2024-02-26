@@ -64,8 +64,7 @@ exports.updateUser = (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
-      user.name = req.body.name;
-      user.username = req.body.username;
+      user.userName = req.body.userName;
       user.bio = req.body.bio;
       if (imageUrl) {
         user.imageUrl = imageUrl;

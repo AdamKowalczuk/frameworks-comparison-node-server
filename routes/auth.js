@@ -18,7 +18,7 @@ const signupValidationRules = [
     })
     .normalizeEmail(),
   body("password").trim().isLength({ min: 5 }),
-  body("name").trim().not().isEmpty(),
+  body("userName").trim().not().isEmpty(),
 ];
 
 const signinValidationRules = [

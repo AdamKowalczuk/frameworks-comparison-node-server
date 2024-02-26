@@ -22,10 +22,9 @@ exports.signup = (req, res, next) => {
     .hash(password, 12)
     .then((hashedPw) => {
       const user = new User({
-        name: req.body.name,
         email: req.body.email,
         password: hashedPw,
-        username: req.body.username,
+        userName: req.body.userName,
         imageUrl: null,
       });
       return user.save();
@@ -45,8 +44,7 @@ exports.signup = (req, res, next) => {
         user: {
           userId: result._id,
           imageUrl: result.imageUrl,
-          username: result.username,
-          name: result.name,
+          userName: result.userName,
           bio: result.bio,
         },
       });
@@ -95,8 +93,7 @@ exports.login = (req, res, next) => {
         user: {
           userId: loadedUser._id.toString(),
           imageUrl: loadedUser.imageUrl,
-          username: loadedUser.username,
-          name: loadedUser.name,
+          userName: loadedUser.userName,
           bio: loadedUser.bio,
         },
       });

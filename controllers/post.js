@@ -88,7 +88,12 @@ exports.createPost = (req, res, next) => {
             #swagger.description = 'Endpoint to create post.' */
   const imageUrl = `${req.protocol}://${req.hostname}${process.env.PORT ? ":" + process.env.PORT : ""}/${req.file.path}`;
   const post = new Post({
-    creator: req.body.userId,
+    creator: {
+      userId: req.body.creator.userId,
+      imageUrl: req.body.creator.imageUrl,
+      userName: req.body.creator.userName,
+    },
+
     caption: req.body.caption,
     imageUrl: imageUrl,
     location: req.body.location,
