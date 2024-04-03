@@ -50,13 +50,10 @@
                   "password": {
                     "example": "any"
                   },
-                  "name": {
-                    "example": "any"
-                  },
                   "email": {
                     "example": "any"
                   },
-                  "username": {
+                  "userName": {
                     "example": "any"
                   }
                 }
@@ -124,16 +121,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": {
+                  "tags": {
+                    "example": "any"
+                  },
+                  "creator": {
                     "example": "any"
                   },
                   "caption": {
                     "example": "any"
                   },
                   "location": {
-                    "example": "any"
-                  },
-                  "tags": {
                     "example": "any"
                   }
                 }
@@ -234,6 +231,29 @@
         }
       }
     },
+    "/api/posts/search/{query}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Endpoint to search posts by caption.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/posts/{postId}/like": {
       "post": {
         "tags": [
@@ -255,8 +275,10 @@
             "description": "OK"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/api/posts/{postId}/unlike": {
+      "post": {
         "tags": [
           "Post"
         ],
@@ -278,36 +300,15 @@
         }
       }
     },
-    "/api/posts/{postId}/save": {
-      "post": {
+    "/api/posts/liked/{userId}": {
+      "get": {
         "tags": [
           "Post"
         ],
-        "description": "Endpoint to save a post.",
+        "description": "Endpoint to get list of liked posts by user.",
         "parameters": [
           {
-            "name": "postId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Post"
-        ],
-        "description": "Endpoint to unsave a post.",
-        "parameters": [
-          {
-            "name": "postId",
+            "name": "userId",
             "in": "path",
             "required": true,
             "schema": {
@@ -383,10 +384,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "example": "any"
-                  },
-                  "username": {
+                  "userName": {
                     "example": "any"
                   },
                   "bio": {
