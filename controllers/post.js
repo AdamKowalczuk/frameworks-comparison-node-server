@@ -87,6 +87,7 @@ exports.createPost = (req, res, next) => {
   /*  #swagger.tags = ['Post']
             #swagger.description = 'Endpoint to create post.' */
   const imageUrl = `${req.protocol}://${req.hostname}${process.env.PORT ? ":" + process.env.PORT : ""}/${req.file.path}`;
+  const tagsArray = req.body.tags.split(",").map((tag) => tag.trim());
   const post = new Post({
     creator: {
       userId: req.body.creator.userId,
@@ -97,7 +98,7 @@ exports.createPost = (req, res, next) => {
     caption: req.body.caption,
     imageUrl: imageUrl,
     location: req.body.location,
-    tags: req.body.tags,
+    tags: tagsArray,
   });
   post
     .save()
@@ -117,10 +118,10 @@ exports.createPost = (req, res, next) => {
 
 exports.searchPosts = (req, res, next) => {
   /*  #swagger.tags = ['Post']
-            #swagger.description = 'Endpoint to search posts.' */
-  const searchTerm = req.query.q;
+            #swagger.description = 'Endpoint to search posts by caption.' */
+  const searchTerm = req.params.query;
 
-  Post.find({ $text: { $search: searchTerm } })
+  Post.find({ caption: { $regex: searchTerm, $options: "i" } })
     .then((posts) => {
       if (!posts || posts.length === 0) {
         const error = new Error("No posts found matching the search term!");
@@ -266,6 +267,30 @@ exports.unlikePost = (req, res, next) => {
     })
     .then(() => {
       res.status(200).json({ message: "Post unliked successfully." });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.getLikedPosts = (req, res, next) => {
+  /*  #swagger.tags = ['Post']
+            #swagger.description = 'Endpoint to get list of liked posts by user.' */
+  const userId = req.params.userId;
+
+  User.findById(userId)
+    .populate("likedPosts")
+    .then((user) => {
+      if (!user) {
+        const error = new Error("User not found.");
+        error.statusCode = 404;
+        throw error;
+      }
+
+      res.status(200).json({ message: "Liked posts fetched!", likedPosts: user.likedPosts });
     })
     .catch((err) => {
       if (!err.statusCode) {

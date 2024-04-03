@@ -17,10 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const updateUserValidationRules = [
-  body("name").trim().not().isEmpty().withMessage("Name is required."),
-  body("userName").trim().not().isEmpty().withMessage("Username is required."),
-];
+const updateUserValidationRules = [body("userName").trim().not().isEmpty().withMessage("Username is required.")];
 
 router.get("/api/users", isAuth, userController.getUsers);
 router.get("/api/users/:userId", isAuth, userController.getUser);
