@@ -32,6 +32,9 @@ https://frameworks-comparison-node-server.onrender.com/api-docs/
 - Swagger
 - Multer
 
+<img width="810" height="566" alt="image" src="https://github.com/user-attachments/assets/3f70d089-a227-49d1-98a0-7aa661e2a791" />
+
+
 ## Autor
 
 Adam Kowalczuk
